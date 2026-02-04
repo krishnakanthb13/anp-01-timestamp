@@ -2,6 +2,8 @@
 
 A versatile timestamp generator for Amplenote, supporting Digital, Analog, Roman Numeral, and Natural Text formats.
 
+![Timestamp Plugin](timestamp.png)
+
 ## Installation
 
 1.  Open the file `build/timestamp.compiled.js` in this repository.

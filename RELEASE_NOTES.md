@@ -1,6 +1,6 @@
 # Release Notes
 
-## v0.0.8 (2026-02-05)
+## v0.0.9 (2026-02-05)
 -   **Initial Release**: First public release of the Timestamp plugin.
 -   **Features**:
     -   **Digital**: Custom format support (Y-m-d H:n:s).
