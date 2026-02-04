@@ -16,7 +16,6 @@
         },
 
         "Roman": function(app) {
-            // Validated Roman Logic
             const d = new Date();
             const r = n => {
                 if (!+n) return '';
@@ -29,11 +28,9 @@
         },
 
         "Analog": async function(app) {
-            // 1. Context Check
             if (!app.context.noteUUID) return "Error: Open a note to insert image.";
 
             try {
-                // 2. SVG Generation
                 const theme = app.settings["timestamp analog - theme - dark / light / neon"] || "dark";
                 const now = new Date();
                 const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
@@ -52,7 +49,6 @@
                     `<line x1="50" y1="50" x2="50" y2="10" stroke="${t.sec}" stroke-width="1" transform="rotate(${sAng}, 50, 50)"/>` +
                     `<circle cx="50" cy="50" r="3" fill="${t.sec}"/></svg>`;
 
-                // 3. Convert to PNG (Inline Logic)
                 const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
 
                 const dataURL = await new Promise(r => {
@@ -73,24 +69,47 @@
                     img.src = dataURL;
                 });
 
-                // 4. Upload
                 const url = await app.attachNoteMedia({ uuid: app.context.noteUUID }, pngURL);
 
-                if (!url) throw new Error("Upload returned empty URL");
+                if (url) {
+                    const encoded = window.encodeURIComponent(window.btoa(svg));
+                    const post = app.settings["timestamp analog - post script"] || "";
+                    const markdown = `![${now.toLocaleTimeString()}](${url}?text=${encoded})${post ? " " + post : ""}.`;
 
-                // 5. RETURN String (Let Amplenote handle insertion)
-                const encoded = window.encodeURIComponent(window.btoa(svg));
-                const post = app.settings["timestamp analog - post script"] || "";
-                return `![${now.toLocaleTimeString()}](${url}?text=${encoded})${post ? " " + post : ""}.`;
+                    // Explicit insertion at end of note.
+                    // Returning "" (empty string) instead of null to prevent auto-insertion.
+                    await app.insertNoteContent({ uuid: app.context.noteUUID }, markdown, { atEnd: true });
+                    // app.context.replaceSelection(`![${now.toLocaleTimeString()}](${markdown})`);
+                } else {
+                    app.alert("Upload Failed");
+                }
 
             } catch (e) {
-                return "Error: " + (e.message || "Unknown error");
+                app.alert("Error: " + e.message);
             }
+            return ""; // CHANGED from null to empty string to stop double-insert
         },
 
         "Text": function(app) {
-            return "It's time.";
-            // Keeping text simple for now to avoid errors elsewhere
+            const d = new Date(), h = d.getHours(), m = d.getMinutes();
+            const H = ["Twelve", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven"];
+            const M = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Quarter", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+            const T = ["", "", "Twenty", "Thirty", "Forty", "Fifty"];
+
+            const getM = min => {
+                if (min < 20) return M[min];
+                return T[Math.floor(min / 10)] + (min % 10 ? "-" + M[min % 10] : "");
+            };
+
+            let s;
+            if (m === 0) s = `It's ${H[h % 12]} o'clock`;
+            else if (m === 30) s = `It's half past ${H[h % 12]}`;
+            else if (m < 30) s = `It's ${getM(m)} past ${H[h % 12]}`;
+            else s = `It's ${getM(60 - m)} to ${H[(h + 1) % 12]}`;
+
+            const pre = app.settings["timestamp text - pre script"] || "";
+            const post = app.settings["timestamp text - post script"] || "";
+            return (pre ? pre + " " : "") + s + (post ? ". " + post : ".");
         },
 
         "Unix": function(app) {
@@ -99,9 +118,9 @@
     },
 
     replaceText: {
-        "Analog": async function(app, text) {
-            // Placeholder to ensure object structure matches
-            return null;
+        "UnixToDateTime": function(app, text) {
+            const ts = parseInt(text.trim(), 10);
+            return isNaN(ts) ? "Invalid Unix timestamp" : new Date(ts * 1000).toLocaleString();
         }
     }
 }
