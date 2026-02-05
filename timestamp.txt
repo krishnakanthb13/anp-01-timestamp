@@ -30,6 +30,6 @@ Click on the down arrow, beside your username (left top of Amplenote).
 
 -- Future Scope --
 
-- [] Use Standard ISO8601 Formatting. https://momentjscom.readthedocs.io/en/latest/moment/04-displaying/01-format/
+- [x] Use Standard ISO8601 Formatting.
 
 -- END --

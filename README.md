@@ -28,7 +28,7 @@ A versatile timestamp generator for Amplenote, supporting Digital, Analog, Roman
 
 | Setting Name | Default | Description |
 | :--- | :--- | :--- |
-| `timestamp for digital - structure` | `Y-m-d H:n:s` | Format string for Digital timestamps. Keys: Y (Year), m (Month), d (Day), H (Hour), n (Min), s (Sec), A (AM/PM). |
+| `timestamp for digital - structure` | `YYYY-MM-DD HH:mm:ss` | Format string for Digital timestamps. Powered by [Day.js](https://day.js.org/docs/en/display/format). For a full list of tokens, see the [Day.js Formatting Guide](./dayjs.md). Supports `[...]` for escaping. |
 | `timestamp analog - theme` | `dark` | Visual theme for the Analog clock (`dark`, `light`, or `neon`). |
 | `timestamp analog - post script` | *(empty)* | Text to append after the Analog clock image. |
 | `timestamp text - pre/post script` | *(empty)* | Text to wrap around the natural text timestamp. |
