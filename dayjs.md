@@ -6,21 +6,31 @@ This plugin uses **Day.js** (with the `advancedFormat` plugin) to generate digit
 
 ### Table of Formatting Tokens
 
-| Category | Token | Description | Example (Jan 05, 2026 14:05:01) |
+| Category | Token | Description | Example (Feb 05, 2026 14:05:01) |
 | :--- | :--- | :--- | :--- |
 | **Year** | `YYYY` | 4-digit year | `2026` |
 | | `YY` | 2-digit year | `26` |
-| **Month** | `MMMM` | Full month name | `January` |
-| | `MMM` | Short month name | `Jan` |
-| | `MM` | Month, 2-digit | `01` |
-| | `M` | Month, 1-digit | `1` |
-| **Day of Month** | `DD` | Day of month, 2-digit | `05` |
-| | `D` | Day of month, 1-digit | `5` |
+| **Quarter** | `Q` | Quarter of year | `1` |
+| **Month** | `MMMM` | Full month name | `February` |
+| | `MMM` | Short month name | `Feb` |
+| | `MM` | Month, 2-digit | `02` |
+| | `M` | Month, 1-digit | `2` |
+| **Day of Month** | `DD` | Day of month (01-31) | `05` |
+| | `D` | Day of month (1-31) | `5` |
 | | `Do` | Day of month, ordinal | `5th` |
-| **Day of Week** | `dddd` | Full day of week | `Monday` |
-| | `ddd` | Short day of week | `Mon` |
-| | `dd` | Min day of week | `Mo` |
+| **Day of Year** | `DDDD` | Day of year (001-366) | `036` |
+| | `DDD` | Day of year (1-366) | `36` |
+| | `DDDo` | Day of year, ordinal | `36th` |
+| **Day of Week** | `dddd` | Full day name | `Monday` |
+| | `ddd` | Short day name | `Mon` |
+| | `dd` | Min day name | `Mo` |
 | | `d` | Day of week (0-6) | `1` |
+| | `E` | ISO Day of Week (1-7) | `1` |
+| **Week of Year** | `ww` | Week of year, 2-digit | `02` |
+| | `w` | Week of year | `2` |
+| | `wo` | Week of year, ordinal | `2nd` |
+| **ISO Week** | `WW` | ISO Week, 2-digit | `02` |
+| | `W` | ISO Week | `2` |
 | **Hour** | `HH` | 24-hour, 2-digit | `14` |
 | | `H` | 24-hour, 1-digit | `14` |
 | | `hh` | 12-hour, 2-digit | `02` |
@@ -37,8 +47,7 @@ This plugin uses **Day.js** (with the `advancedFormat` plugin) to generate digit
 | **Timezone** | `Z` | Offset from UTC | `+05:30` |
 | | `ZZ` | Offset from UTC (no colon) | `+0530` |
 | **Unix** | `X` | Unix Timestamp (seconds) | `1738744501` |
-| | `x` | Unix Timestamp (ms) | `1738744501000` |
-| **Quarter** | `Q` | Quarter of year | `1` |
+| | ISO 8601 | `ISO` | Standard Format | `2026-02-05T14...` |
 
 ### Special Formatting Tips
 
@@ -60,6 +69,7 @@ This plugin uses **Day.js** (with the `advancedFormat` plugin) to generate digit
 | `DD/MM/YYYY` | `05/02/2026` | International Date Format |
 | `[Today is] dddd` | `Today is Thursday` | Literal Text with Day |
 | `Do [of] MMMM, YYYY` | `5th of February, 2026` | Ordinal Style |
+| `DDDo [Day of Year]` | `36th Day of Year` | Day of Year Usage |
 | `YYYYMMDD-HHmmss` | `20260205-141100` | Compact (File-safe) |
 | `X` | `1738744860` | Unix Timestamp (Seconds) |
 | `ISO` | `2026-02-05T14:11:00+05:30` | Standard ISO8601 |

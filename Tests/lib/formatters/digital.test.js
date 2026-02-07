@@ -25,7 +25,10 @@ describe('digital', () => {
             { format: "A a", regex: /^(AM|PM) (am|pm)$/ },
             { format: "Z ZZ", regex: /^[+-]\d{2}:\d{2} [+-]\d{4}$/ },
             { format: "X x", regex: /^\d{10} \d{13}$/ },
-            { format: "Q", regex: /^[1-4]$/ }
+            { format: "Q", regex: /^[1-4]$/ },
+            { format: "w ww wo", regex: /^\d{1,2} \d{2} \d+(st|nd|rd|th)$/ },
+            { format: "DDD DDDo", regex: /^\d{1,3} \d+(st|nd|rd|th)$/ },
+            { format: "W WW", regex: /^\d{1,2} \d{2}$/ }
         ];
 
         testCases.forEach(({ format, regex }) => {

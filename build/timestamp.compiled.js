@@ -357,18 +357,116 @@ var require_advancedFormat = __commonJS({
   }
 });
 
+// node_modules/dayjs/plugin/weekOfYear.js
+var require_weekOfYear = __commonJS({
+  "node_modules/dayjs/plugin/weekOfYear.js"(exports, module) {
+    !(function(e, t) {
+      "object" == typeof exports && "undefined" != typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define(t) : (e = "undefined" != typeof globalThis ? globalThis : e || self).dayjs_plugin_weekOfYear = t();
+    })(exports, (function() {
+      "use strict";
+      var e = "week", t = "year";
+      return function(i, n, r) {
+        var f = n.prototype;
+        f.week = function(i2) {
+          if (void 0 === i2 && (i2 = null), null !== i2) return this.add(7 * (i2 - this.week()), "day");
+          var n2 = this.$locale().yearStart || 1;
+          if (11 === this.month() && this.date() > 25) {
+            var f2 = r(this).startOf(t).add(1, t).date(n2), s = r(this).endOf(e);
+            if (f2.isBefore(s)) return 1;
+          }
+          var a = r(this).startOf(t).date(n2).startOf(e).subtract(1, "millisecond"), o = this.diff(a, e, true);
+          return o < 0 ? r(this).startOf("week").week() : Math.ceil(o);
+        }, f.weeks = function(e2) {
+          return void 0 === e2 && (e2 = null), this.week(e2);
+        };
+      };
+    }));
+  }
+});
+
+// node_modules/dayjs/plugin/dayOfYear.js
+var require_dayOfYear = __commonJS({
+  "node_modules/dayjs/plugin/dayOfYear.js"(exports, module) {
+    !(function(e, t) {
+      "object" == typeof exports && "undefined" != typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define(t) : (e = "undefined" != typeof globalThis ? globalThis : e || self).dayjs_plugin_dayOfYear = t();
+    })(exports, (function() {
+      "use strict";
+      return function(e, t, n) {
+        t.prototype.dayOfYear = function(e2) {
+          var t2 = Math.round((n(this).startOf("day") - n(this).startOf("year")) / 864e5) + 1;
+          return null == e2 ? t2 : this.add(e2 - t2, "day");
+        };
+      };
+    }));
+  }
+});
+
+// node_modules/dayjs/plugin/isoWeek.js
+var require_isoWeek = __commonJS({
+  "node_modules/dayjs/plugin/isoWeek.js"(exports, module) {
+    !(function(e, t) {
+      "object" == typeof exports && "undefined" != typeof module ? module.exports = t() : "function" == typeof define && define.amd ? define(t) : (e = "undefined" != typeof globalThis ? globalThis : e || self).dayjs_plugin_isoWeek = t();
+    })(exports, (function() {
+      "use strict";
+      var e = "day";
+      return function(t, i, s) {
+        var a = function(t2) {
+          return t2.add(4 - t2.isoWeekday(), e);
+        }, d = i.prototype;
+        d.isoWeekYear = function() {
+          return a(this).year();
+        }, d.isoWeek = function(t2) {
+          if (!this.$utils().u(t2)) return this.add(7 * (t2 - this.isoWeek()), e);
+          var i2, d2, n2, o, r = a(this), u = (i2 = this.isoWeekYear(), d2 = this.$u, n2 = (d2 ? s.utc : s)().year(i2).startOf("year"), o = 4 - n2.isoWeekday(), n2.isoWeekday() > 4 && (o += 7), n2.add(o, e));
+          return r.diff(u, "week") + 1;
+        }, d.isoWeekday = function(e2) {
+          return this.$utils().u(e2) ? this.day() || 7 : this.day(this.day() % 7 ? e2 : e2 - 7);
+        };
+        var n = d.startOf;
+        d.startOf = function(e2, t2) {
+          var i2 = this.$utils(), s2 = !!i2.u(t2) || t2;
+          return "isoweek" === i2.p(e2) ? s2 ? this.date(this.date() - (this.isoWeekday() - 1)).startOf("day") : this.date(this.date() - 1 - (this.isoWeekday() - 1) + 7).endOf("day") : n.bind(this)(e2, t2);
+        };
+      };
+    }));
+  }
+});
+
 // anp-01-timestamp/lib/formatters/digital.js
 var import_dayjs = __toESM(require_dayjs_min(), 1);
 var import_advancedFormat = __toESM(require_advancedFormat(), 1);
+var import_weekOfYear = __toESM(require_weekOfYear(), 1);
+var import_dayOfYear = __toESM(require_dayOfYear(), 1);
+var import_isoWeek = __toESM(require_isoWeek(), 1);
 import_dayjs.default.extend(import_advancedFormat.default);
+import_dayjs.default.extend(import_weekOfYear.default);
+import_dayjs.default.extend(import_dayOfYear.default);
+import_dayjs.default.extend(import_isoWeek.default);
 function digital(app) {
   const s = app.settings;
-  const format = String(s["timestamp for digital - structure"] || "YYYY-MM-DD HH:mm:ss");
+  const formatStr = String(s["timestamp for digital - structure"] || "YYYY-MM-DD HH:mm:ss");
   const now = (0, import_dayjs.default)();
-  if (format.toUpperCase() === "ISO") {
+  if (formatStr.toUpperCase() === "ISO") {
     return now.format();
   }
-  return now.format(format);
+  const startOfYear = now.startOf("year");
+  const doy = now.diff(startOfYear, "day") + 1;
+  const doyPadded = String(doy).padStart(3, "0");
+  const getOrdinal = (n) => {
+    const suffixes = ["th", "st", "nd", "rd"], v = n % 100;
+    return n + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
+  };
+  const doyTokens = {
+    "DDDD": doyPadded,
+    "DDDo": getOrdinal(doy),
+    "DDD": String(doy)
+  };
+  const doyRegex = /\[([^\]]+)\]|DDDD|DDDo|DDD/g;
+  const processedFormat = formatStr.replace(doyRegex, (match, escaped) => {
+    if (escaped) return `[${escaped}]`;
+    return `[${doyTokens[match]}]`;
+  });
+  return now.format(processedFormat);
 }
 
 // anp-01-timestamp/lib/formatters/roman.js
