@@ -31,5 +31,6 @@ Click on the down arrow, beside your username (left top of Amplenote).
 -- Future Scope --
 
 - [x] Use Standard ISO8601 Formatting.
+- [ ] Multiple Digital options - with different date-time formatting.
 
 -- END --

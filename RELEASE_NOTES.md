@@ -1,5 +1,15 @@
 # Release Notes
 
+## v0.0.15 (2026-02-07)
+-   **Bug Fix**: Resolved Day of Year token clashing.
+    -   Implemented a custom pre-pass mitigation layer to prevent `DDD` from being mis-parsed as `DD` + `D`.
+-   **Feature**: Enhanced Week of Year and ISO Week support via Day.js plugins.
+-   **Documentation**:
+    -   Added **Design Philosophy** and **Code Documentation** for deeper technical insight.
+    -   Refined **README.md** with professional power-user installation guide.
+    -   Fixed `dayjs.md` examples for Day of Year ordinals.
+-   **Quality**: Standardized JSDoc across all internal modules for better maintainability.
+
 ## v0.0.14 (2026-02-05)
 -   **Feature Enhancement**: Advanced Digital Timestamp Formatting.
     -   Transitioned to **Day.js** for 100% standard compliance with Moment.js tokens.
