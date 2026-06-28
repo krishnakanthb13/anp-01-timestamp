@@ -523,7 +523,7 @@ async function analog(app) {
       const encoded = window.encodeURIComponent(window.btoa(svg));
       const post = app.settings["timestamp analog - post script"] || "";
       const markdown = `![${now.toLocaleTimeString()}](${url}?text=${encoded})${post ? " " + post : ""}.`;
-      await app.insertNoteContent({ uuid: app.context.noteUUID }, markdown, { atEnd: true });
+      await app.context.replaceSelection(markdown);
     } else {
       app.alert("Upload Failed");
     }

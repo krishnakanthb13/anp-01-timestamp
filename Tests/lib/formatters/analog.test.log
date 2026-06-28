@@ -1,0 +1,11 @@
+(node:3836) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS anp-01-timestamp/Tests/lib/formatters/analog.test.js
+  analog
+    ✓ should generate analog clock, upload media and replace selection (15 ms)
+    ✓ should return error when noteUUID is missing (1 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       2 passed, 2 total
+Snapshots:   0 total
+Time:        5.471 s
