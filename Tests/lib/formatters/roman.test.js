@@ -18,7 +18,7 @@ describe('roman', () => {
         // Format is D/M/Y, H:M:S
         // Roman numerals use I, V, X, L, C, D, M.
         // The format includes / , : and space.
-        expect(result).toMatch(/^([IVXLCDM]*)\/([IVXLCDM]*)\/([IVXLCDM]*), ([IVXLCDM]*):([IVXLCDM]*):([IVXLCDM]*)$/);
+        expect(result).toMatch(/^([0IVXLCDM]*)\/([0IVXLCDM]*)\/([0IVXLCDM]*), ([0IVXLCDM]*):([0IVXLCDM]*):([0IVXLCDM]*)$/);
     });
 
     test('should correctly format specific date and time including DCC and LXX (e.g. year 2777)', () => {

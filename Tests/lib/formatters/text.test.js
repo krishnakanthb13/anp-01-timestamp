@@ -7,8 +7,8 @@ describe('Text Formatter', () => {
     beforeEach(() => {
         mockApp = {
             settings: {
-                "timestamp text - pre script": "",
-                "timestamp text - post script": ""
+                "timestamp text - prefix": "",
+                "timestamp text - suffix": ""
             }
         };
     });
@@ -75,7 +75,7 @@ describe('Text Formatter', () => {
     // 3. Settings & Error Handling
     describe('Settings Configuration', () => {
         test('prepends pre-script settings if configured', () => {
-            mockApp.settings["timestamp text - pre script"] = "Reminder:";
+            mockApp.settings["timestamp text - prefix"] = "Reminder:";
             const mockDate = new Date(2026, 5, 29, 10, 0, 0);
             jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
 
@@ -83,7 +83,7 @@ describe('Text Formatter', () => {
         });
 
         test('appends post-script settings if configured', () => {
-            mockApp.settings["timestamp text - post script"] = "[Logged]";
+            mockApp.settings["timestamp text - suffix"] = "[Logged]";
             const mockDate = new Date(2026, 5, 29, 10, 0, 0);
             jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
 
@@ -91,8 +91,8 @@ describe('Text Formatter', () => {
         });
 
         test('combines both pre and post script settings', () => {
-            mockApp.settings["timestamp text - pre script"] = "Info:";
-            mockApp.settings["timestamp text - post script"] = "- Done";
+            mockApp.settings["timestamp text - prefix"] = "Info:";
+            mockApp.settings["timestamp text - suffix"] = "- Done";
             const mockDate = new Date(2026, 5, 29, 10, 0, 0);
             jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
 

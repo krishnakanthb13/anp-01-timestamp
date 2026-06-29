@@ -532,7 +532,7 @@ var getDoyTokens = (doy, doyPadded) => ({
 });
 function digital(app) {
   const s = app.settings;
-  const formatStr = String(s["timestamp for digital - structure"] || "YYYY-MM-DD HH:mm:ss");
+  const formatStr = String(s["timestamp digital - format"] || "YYYY-MM-DD HH:mm:ss");
   const timezone = String(s["timestamp digital - timezone"] || "local").trim().toUpperCase();
   const now = timezone === "UTC" ? import_dayjs.default.utc() : (0, import_dayjs.default)();
   if (formatStr.toUpperCase() === "ISO") {
@@ -571,7 +571,7 @@ function roman(app) {
 async function analog(app) {
   if (!app.context.noteUUID) return "Error: Open a note to insert image.";
   try {
-    const theme = app.settings["timestamp analog - theme - dark / light / neon"] || "dark";
+    const theme = app.settings["timestamp analog - theme"] || "dark";
     const now = /* @__PURE__ */ new Date();
     const h = now.getHours(), m = now.getMinutes(), s = now.getSeconds();
     const hAng = h % 12 * 30 + m * 0.5, mAng = m * 6 + s * 0.1, sAng = s * 6;
@@ -612,7 +612,7 @@ async function analog(app) {
     const url = await app.attachNoteMedia({ uuid: app.context.noteUUID }, pngURL);
     if (url) {
       const encoded = window.encodeURIComponent(window.btoa(unescape(encodeURIComponent(svg))));
-      const post = app.settings["timestamp analog - post script"] || "";
+      const post = app.settings["timestamp analog - suffix"] || "";
       const markdown = `![${now.toLocaleTimeString()}](${url}?text=${encoded})${post ? " " + post : ""}.`;
       await app.context.replaceSelection(markdown);
     } else {
@@ -639,8 +639,8 @@ function text(app) {
   else if (m === 30) s = `It's half past ${H[h % 12]}`;
   else if (m < 30) s = `It's ${getM(m)} past ${H[h % 12]}`;
   else s = `It's ${getM(60 - m)} to ${H[(h + 1) % 12]}`;
-  const pre = app.settings["timestamp text - pre script"] || "";
-  const post = app.settings["timestamp text - post script"] || "";
+  const pre = app.settings["timestamp text - prefix"] || "";
+  const post = app.settings["timestamp text - suffix"] || "";
   return (pre ? pre + " " : "") + s + (post ? ". " + post : ".");
 }
 
