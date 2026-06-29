@@ -13,11 +13,13 @@ A versatile Amplenote plugin that allows you to easily insert timestamps in mult
 | :--- | :--- |
 | name | Timestamp |
 | description | Different types of Timestamps. Every possibility that you can think of. You can modify them based on your needs using the info given in the below details using the different details in the below (View note Link). |
+| instructions | Start by typing forward slash command. Type Timestamp, and you will be able to see all the 5 different options, Digital, Roman, Analog, Text, Unix. To convert the Unix back to normal Timestamp, select the Unix, in the dropdown, click on UnixToDateTime. Digital Formatting Reference: https://github.com/krishnakanthb13/anp-01-timestamp/blob/main/dayjs.md  |
 | icon | update |
 | settings | timestamp for digital - structure |
 | settings | timestamp digital - timezone |
 | settings | timestamp analog - theme - dark / light / neon |
 | settings | timestamp analog - post script |
+| settings | timestamp analog - size |
 | settings | timestamp text - pre script |
 | settings | timestamp text - post script |
 
@@ -31,7 +33,7 @@ Once installed, the plugin adds the following commands to your note:
 
 ### Insert Text Commands
 
-Trigger these by typing `/` in a note and selecting the command.
+Trigger these by typing `/` or `{` in a note and selecting the command.
 
 - **`{ Digital }`**: Inserts a standard digital timestamp according to your configured `timestamp for digital - structure` setting. Supports Moment.js/Day.js style tokens and a special "ISO" keyword.
 - **`{ Roman }`**: Inserts the current date and time formatted entirely in Roman numerals.

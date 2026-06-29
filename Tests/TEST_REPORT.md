@@ -25,6 +25,10 @@ Executed unit tests for the core formatting and replacement logic. The test suit
   - Verified image creation, markdown formatting, attachment, and cursor insertion via `app.context.replaceSelection`.
   - *Update*: Ensured `btoa` encoding safely processes Unicode characters without throwing memory/DOM exceptions (`InvalidCharacterError`).
   - *Update*: Clock size is now dynamically controlled by user settings.
+- **Text Formatter**: ✅ PASS
+  - Verified default formats (o'clock, half past, quarter past, quarter to).
+  - Verified transition edge cases (midnight, noon) and single-digit minutes.
+  - Verified prefix/suffix settings injection.
 - **Unix Formatter**: ✅ PASS
   - Verified timestamp generation accuracy (+/- 5s).
 - **UnixToDateTime Replacer**: ✅ PASS
@@ -32,7 +36,7 @@ Executed unit tests for the core formatting and replacement logic. The test suit
   - Verified error handling for invalid strings.
 
 ### Regression Analysis
-No regressions detected. Recent structural improvements, bug fixes, and modular extraction successfully passed all 15 verifications.
+No regressions detected. Recent structural improvements, bug fixes, and modular extraction successfully passed all 25 verifications.
 
 ### Recommendations
 1.  **Snapshot Testing**: Consider adding snapshots for the Roman numeral output to catch subtle format changes.
