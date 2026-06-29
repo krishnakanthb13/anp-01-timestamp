@@ -432,39 +432,120 @@ var require_isoWeek = __commonJS({
   }
 });
 
+// node_modules/dayjs/plugin/utc.js
+var require_utc = __commonJS({
+  "node_modules/dayjs/plugin/utc.js"(exports, module) {
+    !(function(t, i) {
+      "object" == typeof exports && "undefined" != typeof module ? module.exports = i() : "function" == typeof define && define.amd ? define(i) : (t = "undefined" != typeof globalThis ? globalThis : t || self).dayjs_plugin_utc = i();
+    })(exports, (function() {
+      "use strict";
+      var t = "minute", i = /[+-]\d\d(?::?\d\d)?/g, e = /([+-]|\d\d)/g;
+      return function(s, f, n) {
+        var u = f.prototype;
+        n.utc = function(t2) {
+          var i2 = { date: t2, utc: true, args: arguments };
+          return new f(i2);
+        }, u.utc = function(i2) {
+          var e2 = n(this.toDate(), { locale: this.$L, utc: true });
+          return i2 ? e2.add(this.utcOffset(), t) : e2;
+        }, u.local = function() {
+          return n(this.toDate(), { locale: this.$L, utc: false });
+        };
+        var r = u.parse;
+        u.parse = function(t2) {
+          t2.utc && (this.$u = true), this.$utils().u(t2.$offset) || (this.$offset = t2.$offset), r.call(this, t2);
+        };
+        var o = u.init;
+        u.init = function() {
+          if (this.$u) {
+            var t2 = this.$d;
+            this.$y = t2.getUTCFullYear(), this.$M = t2.getUTCMonth(), this.$D = t2.getUTCDate(), this.$W = t2.getUTCDay(), this.$H = t2.getUTCHours(), this.$m = t2.getUTCMinutes(), this.$s = t2.getUTCSeconds(), this.$ms = t2.getUTCMilliseconds();
+          } else o.call(this);
+        };
+        var a = u.utcOffset;
+        u.utcOffset = function(s2, f2) {
+          var n2 = this.$utils().u;
+          if (n2(s2)) return this.$u ? 0 : n2(this.$offset) ? a.call(this) : this.$offset;
+          if ("string" == typeof s2 && (s2 = (function(t2) {
+            void 0 === t2 && (t2 = "");
+            var s3 = t2.match(i);
+            if (!s3) return null;
+            var f3 = ("" + s3[0]).match(e) || ["-", 0, 0], n3 = f3[0], u3 = 60 * +f3[1] + +f3[2];
+            return 0 === u3 ? 0 : "+" === n3 ? u3 : -u3;
+          })(s2), null === s2)) return this;
+          var u2 = Math.abs(s2) <= 16 ? 60 * s2 : s2;
+          if (0 === u2) return this.utc(f2);
+          var r2 = this.clone();
+          if (f2) return r2.$offset = u2, r2.$u = false, r2;
+          var o2 = this.$u ? this.toDate().getTimezoneOffset() : -1 * this.utcOffset();
+          return (r2 = this.local().add(u2 + o2, t)).$offset = u2, r2.$x.$localOffset = o2, r2;
+        };
+        var h = u.format;
+        u.format = function(t2) {
+          var i2 = t2 || (this.$u ? "YYYY-MM-DDTHH:mm:ss[Z]" : "");
+          return h.call(this, i2);
+        }, u.valueOf = function() {
+          var t2 = this.$utils().u(this.$offset) ? 0 : this.$offset + (this.$x.$localOffset || this.$d.getTimezoneOffset());
+          return this.$d.valueOf() - 6e4 * t2;
+        }, u.isUTC = function() {
+          return !!this.$u;
+        }, u.toISOString = function() {
+          return this.toDate().toISOString();
+        }, u.toString = function() {
+          return this.toDate().toUTCString();
+        };
+        var l = u.toDate;
+        u.toDate = function(t2) {
+          return "s" === t2 && this.$offset ? n(this.format("YYYY-MM-DD HH:mm:ss:SSS")).toDate() : l.call(this);
+        };
+        var c = u.diff;
+        u.diff = function(t2, i2, e2) {
+          if (t2 && this.$u === t2.$u) return c.call(this, t2, i2, e2);
+          var s2 = this.local(), f2 = n(t2).local();
+          return c.call(s2, f2, i2, e2);
+        };
+      };
+    }));
+  }
+});
+
 // anp-01-timestamp/lib/formatters/digital.js
 var import_dayjs = __toESM(require_dayjs_min(), 1);
 var import_advancedFormat = __toESM(require_advancedFormat(), 1);
 var import_weekOfYear = __toESM(require_weekOfYear(), 1);
 var import_dayOfYear = __toESM(require_dayOfYear(), 1);
 var import_isoWeek = __toESM(require_isoWeek(), 1);
+var import_utc = __toESM(require_utc(), 1);
 import_dayjs.default.extend(import_advancedFormat.default);
 import_dayjs.default.extend(import_weekOfYear.default);
 import_dayjs.default.extend(import_dayOfYear.default);
 import_dayjs.default.extend(import_isoWeek.default);
+import_dayjs.default.extend(import_utc.default);
+var getOrdinal = (n) => {
+  const suffixes = ["th", "st", "nd", "rd"], v = n % 100;
+  return n + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
+};
+var getDoyTokens = (doy, doyPadded) => ({
+  "DDDD": doyPadded,
+  "DDDo": getOrdinal(doy),
+  "DDD": String(doy)
+});
 function digital(app) {
   const s = app.settings;
   const formatStr = String(s["timestamp for digital - structure"] || "YYYY-MM-DD HH:mm:ss");
-  const now = (0, import_dayjs.default)();
+  const timezone = String(s["timestamp digital - timezone"] || "local").trim().toUpperCase();
+  const now = timezone === "UTC" ? import_dayjs.default.utc() : (0, import_dayjs.default)();
   if (formatStr.toUpperCase() === "ISO") {
     return now.format();
   }
   const startOfYear = now.startOf("year");
   const doy = now.diff(startOfYear, "day") + 1;
   const doyPadded = String(doy).padStart(3, "0");
-  const getOrdinal = (n) => {
-    const suffixes = ["th", "st", "nd", "rd"], v = n % 100;
-    return n + (suffixes[(v - 20) % 10] || suffixes[v] || suffixes[0]);
-  };
-  const doyTokens = {
-    "DDDD": doyPadded,
-    "DDDo": getOrdinal(doy),
-    "DDD": String(doy)
-  };
+  const tokens = getDoyTokens(doy, doyPadded);
   const doyRegex = /\[([^\]]+)\]|DDDD|DDDo|DDD/g;
   const processedFormat = formatStr.replace(doyRegex, (match, escaped) => {
     if (escaped) return `[${escaped}]`;
-    return `[${doyTokens[match]}]`;
+    return `[${tokens[match]}]`;
   });
   return now.format(processedFormat);
 }
@@ -473,8 +554,9 @@ function digital(app) {
 function roman(app) {
   const d = /* @__PURE__ */ new Date();
   const r = (n) => {
+    if (n === 0) return "0";
     if (!+n) return "";
-    const k = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCCC", "CM", "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC", "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"], g = String(+n).split("");
+    const k = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM", "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC", "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"], g = String(+n).split("");
     let s = "", i = 3;
     while (i--) {
       let v = g.pop();
@@ -499,7 +581,16 @@ async function analog(app) {
       neon: { bg: "#000", stroke: "#0f0", hands: "#f0f", sec: "#ff0" }
     };
     const t = themes[theme] || themes.dark;
-    const svg = `<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" stroke="${t.stroke}" stroke-width="4" fill="${t.bg}"/><line x1="50" y1="50" x2="50" y2="30" stroke="${t.hands}" stroke-width="5" transform="rotate(${hAng}, 50, 50)"/><line x1="50" y1="50" x2="50" y2="20" stroke="${t.hands}" stroke-width="3" transform="rotate(${mAng}, 50, 50)"/><line x1="50" y1="50" x2="50" y2="10" stroke="${t.sec}" stroke-width="1" transform="rotate(${sAng}, 50, 50)"/><circle cx="50" cy="50" r="3" fill="${t.sec}"/></svg>`;
+    const size = Math.max(50, Math.min(500, Number(app.settings["timestamp analog - size"]) || 100));
+    const ticks = Array.from({ length: 12 }, (_, i) => {
+      const angle = (i * 30 - 90) * Math.PI / 180;
+      const x1 = 50 + 42 * Math.cos(angle);
+      const y1 = 50 + 42 * Math.sin(angle);
+      const x2 = 50 + 46 * Math.cos(angle);
+      const y2 = 50 + 46 * Math.sin(angle);
+      return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${t.stroke}" stroke-width="2"/>`;
+    }).join("");
+    const svg = `<svg width="${size}" height="${size}" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="48" stroke="${t.stroke}" stroke-width="4" fill="${t.bg}"/>` + ticks + `<line x1="50" y1="50" x2="50" y2="30" stroke="${t.hands}" stroke-width="5" transform="rotate(${hAng}, 50, 50)"/><line x1="50" y1="50" x2="50" y2="20" stroke="${t.hands}" stroke-width="3" transform="rotate(${mAng}, 50, 50)"/><line x1="50" y1="50" x2="50" y2="10" stroke="${t.sec}" stroke-width="1" transform="rotate(${sAng}, 50, 50)"/><circle cx="50" cy="50" r="3" fill="${t.sec}"/></svg>`;
     const blob = new Blob([svg], { type: "image/svg+xml;charset=utf-8" });
     const dataURL = await new Promise((r) => {
       const fr = new FileReader();
@@ -510,9 +601,9 @@ async function analog(app) {
       const img = new Image();
       img.onload = () => {
         const c = document.createElement("canvas");
-        c.width = 100;
-        c.height = 100;
-        c.getContext("2d").drawImage(img, 0, 0);
+        c.width = size;
+        c.height = size;
+        c.getContext("2d").drawImage(img, 0, 0, size, size);
         resolve(c.toDataURL("image/png"));
       };
       img.onerror = reject;
@@ -520,7 +611,7 @@ async function analog(app) {
     });
     const url = await app.attachNoteMedia({ uuid: app.context.noteUUID }, pngURL);
     if (url) {
-      const encoded = window.encodeURIComponent(window.btoa(svg));
+      const encoded = window.encodeURIComponent(window.btoa(unescape(encodeURIComponent(svg))));
       const post = app.settings["timestamp analog - post script"] || "";
       const markdown = `![${now.toLocaleTimeString()}](${url}?text=${encoded})${post ? " " + post : ""}.`;
       await app.context.replaceSelection(markdown);
