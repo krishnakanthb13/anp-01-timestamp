@@ -1,5 +1,16 @@
 # Release Notes: Timestamp Plugin
 
+## v0.0.22 (2026-07-04)
+
+**Documentation & Refactoring Update**
+
+### ⚡ Improvements
+- **Configuration Names**: Refactored configuration keys to use consistent naming (e.g., changing 'pre script' to 'prefix' and 'post script' to 'suffix'). Updated all formatters and unit tests to align with these modernized setting keys.
+
+### 📚 Documentation
+- **Video Preparation Guide**: Added a comprehensive `youtube/PREP.md` guide containing metadata for video titles, thumbnail designs, SEO-friendly descriptions, and a detailed script for plugin walkthroughs.
+- **README Updates**: Updated README documentation to reflect the modernized configuration setting keys.
+
 ## v0.0.20 (2026-06-29)
 
 **Initial Open-Source Release**

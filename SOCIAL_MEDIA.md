@@ -1,6 +1,51 @@
 # Social Media Release Drafts
 
 ## Title
+Released: Timestamp Plugin v0.0.22 for Amplenote!
+
+## LinkedIn
+Just shipped **Timestamp Plugin v0.0.22** for Amplenote! 🚀
+
+This update focuses on making the user experience even smoother. We've completely standardized the configuration settings, making them much more intuitive (like moving from "pre script" to "prefix"). 
+
+Plus, we've laid the groundwork for awesome content by adding a comprehensive video preparation guide, and we just published our full video walkthrough! 🎥
+
+Watch the video here: https://youtu.be/JWzlXScqDuw
+
+Check out the cleaner code and updated docs. Always striving to improve this plugin!
+
+#Amplenote #Productivity #OpenSource #JavaScript #NoteTaking #DeveloperUpdate
+
+---
+
+## Twitter/X
+Timestamp Plugin v0.0.22 for @amplenote is out! 🚀 We've standardized all configuration names for a cleaner, more intuitive experience and released a new video walkthrough! 🎥✨
+
+Watch the video: https://youtu.be/JWzlXScqDuw
+Repo: https://github.com/krishnakanthb13/anp-01-timestamp
+
+#amplenote #productivity #pkm
+
+---
+
+## Reddit (r/Amplenote & r/Productivity)
+**[Update] Timestamp Plugin v0.0.22 - Cleaner configs & Video guides!**
+
+Hey everyone,
+
+A quick but important update for the Timestamp Plugin (v0.0.22) is live! 
+
+**What's new:**
+- **Standardized Settings:** I've refactored all the configuration keys to be much more intuitive and consistent (e.g., "pre script" is now simply "prefix"). This should make setting up your custom formats a lot cleaner.
+- **Video Walkthrough:** We just published a full video walkthrough covering all the features! 🎥 Watch it here: https://youtu.be/JWzlXScqDuw
+
+The README and all tests have been updated to reflect these smoother settings. 
+
+Check out the latest version here: https://github.com/krishnakanthb13/anp-01-timestamp
+
+---
+
+## Title
 Released: Timestamp Plugin v0.0.20 for Amplenote!
 
 ## LinkedIn
